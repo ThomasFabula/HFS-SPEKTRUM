@@ -1,0 +1,338 @@
+(***********************************************************)
+(*                                                         *)
+(*                TURBO GRAPHIX version 1.05A              *)
+(*                                                         *)
+(*        Graphics module for Hercules Graphics Card       *)
+(*                  Module version  1.03A                  *)
+(*                                                         *)
+(*                  Copyright (C) 1985 by                  *)
+(*                  BORLAND International                  *)
+(*                                                         *)
+(***********************************************************)
+
+const XMaxGlb = 89;                 { Number of BYTES -1 in one screen line }
+      XScreenMaxGlb = 719;         { Number of PIXELS -1 in one screen line }
+      YMaxGlb = 349;                     { Number of lines -1 on the screen }
+                   { *** Change to 347 if monitor loses horizontal hold *** }
+      IVStepGlb = 5;                           { Initial value for VStepGlb }
+      ScreenSizeGlb = 16383;            { Total size in bytes of the screen }
+      HardwareGrafBase = $B000;   { Segment location of the hardware screen }
+      FontLoaded:boolean=false;       { Flag: has the font been loaded yet? }
+      MinForeground=1;                  { Lowest allowable foreground color }
+      MaxForeground=1;                 { Highest allowable foreground color }
+      MinBackground=0;                  { Lowest allowable background color }
+      MaxBackground=0;                 { Highest allowable background color }
+      VRowsGlb=$58;{ *** Change to $57 if monitor loses horizontal hold *** }
+      AspectFactor=0.75;                  { Aspect factor for a true circle }
+      RamScreenInCard:boolean=false;    { Hercules: store RAM screen in the
+                HGC's alternate bank?  Will interfere with some color cards
+                       if present -- see Hercules manual (sets 'Full' mode) }
+
+type ScreenType = array[0..ScreenSizeGlb] of integer;
+     ScreenPointer = ^ScreenType;
+     FontChar=array [0..13] of byte;
+     HercFont=array [0..255] of FontChar;
+     WindowStackRecord=record
+                         W:WindowType;
+                         Contents:ScreenPointer;
+                       end;
+    stacks=array [1..MaxWindowsGlb] of WindowStackRecord;
+
+var ScreenGlb:ScreenPointer;
+    ConOutPtrSave:integer;
+    Font:HercFont;
+    Stack:stacks;
+
+procedure error(ErrProc,ErrCode:integer); forward; { Code in KERNEL.SYS }
+
+function HardwarePresent: boolean;
+  var regs:record case integer of
+             1:(ax,bx,cx,dx,bp,si,di,ds,es,flgs: integer);
+             2:(al,ah,bl,bh,cl,ch,dl,dh: byte);
+           end;
+  function HercPresent: boolean;
+    begin
+       Inline($BB/$00/$01/$BA/$BA/$03/$EC/$88/$C4/$80/$E4/$80/$B9/$40/$00/$EC/
+              $24/$80/$38/$E0/$E1/$F9/$75/$05/$4B/$75/$F1/$EB/$33/$B8/$00/$B0/
+              $8E/$C0/$E8/$11/$00/$75/$0B/$B0/$01/$BA/$BF/$03/$EE/$E8/$06/$00/
+              $74/$1E/$B0/$01/$EB/$1C/$26/$8A/$1E/$FF/$7F/$26/$8A/$0E/$FF/$3F/
+              $26/$FE/$06/$FF/$3F/$26/$3A/$1E/$FF/$3F/$26/$88/$0E/$FF/$3F/$C3/
+              $30/$C0/$88/$46/$04/$08/$C0);
+    end;
+  begin
+    intr($11,regs);
+    HardwarePresent:=HercPresent and ((regs.ax and 48)=48);
+  end;
+
+procedure AllocateRAMScreen;
+  var test:^integer;
+  begin
+    if RAMScreenInCard then ScreenGlb:=ptr($B800,0)
+    else
+     begin
+      new(ScreenGlb);
+      while ofs(ScreenGlb^)<>0 do   { Make absolutely certain that ScreenGlb }
+       begin                        {  is on a segment (16 byte) boundary! }
+        dispose(ScreenGlb);
+        new(test);
+        new(ScreenGlb);
+       end;
+     end;
+  end;
+
+function BaseAddress(Y:integer):integer;
+  begin
+    BaseAddress:=(Y and 3) shl 13 + 90*(Y shr 2);
+  end;
+
+Procedure HerculesMode(Mode:integer); { 0=text, 1=graphics }
+  type
+    ModeDescriptor=record
+                     CRTMode:byte;
+                     R6845:array [0..11] of byte;
+                   end;
+  const
+    VRo=VRowsGlb;
+    HercModes:array [0..1] of ModeDescriptor=
+      ((CRTMode:32; R6845:($61,$50,$52,$0F,$19,$06,$19,$19,$02,$0D,$0B,$0C)),
+       (CRTMode:2;  R6845:($35,$2D,$2E,$07,$5B,$02,VRo,VRo,$02,$03,$00,$00)));
+  begin
+    Delay(100); { Give the Hercules card some time to get ready }
+    Inline($8B/$B6/Mode/$81/$E6/$01/$00/$74/$03/$BE/$0D/$00/$81/$C6/
+           HercModes /$BA/$BF/$03/$B0/$01/$EE/$2E/$8A/$04/$B2/$B8/$EE/$B9/$00/
+           $00/$B2/$B4/$88/$C8/$EE/$46/$2E/$8A/$04/$42/$EE/$4A/$41/$80/$F9/
+           $0C/$75/$F0/$83/$EE/$0C/$2E/$8A/$04/$0C/$08/$B2/$B8/$EE);
+    if RAMScreenInCard then Port[$03BF]:=3;
+  end;
+
+procedure LeaveGraphic;         { Turn graphics mode off }
+  begin
+    HerculesMode(0);
+    ClrScr;
+    if GrafModeGlb then ConOutPtr:=ConOutPtrSave;
+    GrafModeGlb:=false;
+  End;
+
+procedure DC(C:byte);
+  var
+    XShr3:integer;
+    RightBit:boolean;
+  begin
+    Inline($8A/$AE/ C /$8A/$C5/$24/$E0/$3C/$C0/$75/$02/$B0/$01/$24/$01/$88/
+           $86/ RightBit /$8A/$1E/ XTextGlb /$8A/$3E/ YTextGlb /$8A/$C5/$32/
+           $E4/$8B/$D0/$B1/$04/$D3/$E0/$D1/$E2/$2B/$C2/$8B/$F0/$A1/ GrafBase /
+           $8E/$C0/$81/$EB/$01/$01/$32/$F6/$8A/$D3/$B1/$03/$D3/$E2/$02/$D3/
+           $80/$D6/$00/$8B/$C2/$D3/$E8/$89/$86/ XShr3 /$8A/$CA/$80/$E1/$07/
+           $8A/$D7/$BB/$80/$FF/$D3/$EB/$F7/$D3/$80/$F1/$07/$32/$F6/$8B/$C2/
+           $D1/$E2/$D1/$E2/$D1/$E2/$2B/$D0/$D1/$E2/$B5/$0D/$53/$51/$87/$D9/
+           $32/$E4/$8A/$C7/$03/$C2/$8B/$D8/$80/$E3/$03/$B1/$0D/$D3/$E3/$D1/
+           $E8/$D1/$E8/$B4/$5A/$F6/$E4/$03/$C3/$03/$86/ XShr3 /$8B/$F8/$59/
+           $5B/$26/$8B/$05/$86/$C4/$23/$C3/$53/$8A/$DD/$32/$FF/$8A/$98/ Font /
+           $50/$8A/$86/ RightBit /$22/$C3/$D1/$E3/$0A/$D8/$58/$D3/$E3/$0B/$C3/
+           $86/$C4/$26/$89/$05/$5B/$FE/$CD/$79/$B1);
+  end;
+
+procedure DisplayChar(C:byte);
+  begin
+    if C=8 then
+     begin
+      if XTextGlb>1 then XTextGlb:=XTextGlb-1;
+     end
+    else if C=10 then
+     begin
+      If YTextGlb<25 then YTextGlb:=YTextGlb+1;
+     end
+    else if C=13 then XTextGlb:=1
+    else
+     begin
+      DC(C);
+      if XTextGlb<80 then XTextGlb:=XTextGlb+1;
+     end;
+  end;
+
+procedure ClearScreen;
+  begin
+    fillchar(mem[GrafBase:0000],(ScreenSizeGlb+1) Shl 1,0);
+  end;
+
+procedure EnterGraphic;         { Turn graphics mode on, clear screen }
+  var
+    FontFile:file of HercFont;
+  begin
+    if not FontLoaded then
+     begin
+      assign(FontFile,'14x9.FON');
+      {$I-} reset(FontFile); {$I+}
+      if IOResult=0 then
+       begin
+        read(FontFile,Font);
+        close(FontFile);
+       end
+      else FillChar(Font,SizeOf(Font),0);
+      FontLoaded:=true;
+     end;
+    HerculesMode(1);
+    if not GrafModeGlb then ConOutPtrSave:=ConOutPtr;
+    ConOutPtr:=Ofs(DisplayChar);
+    ClearScreen;
+    GrafModeGlb:=true;
+  end;
+
+procedure SetForegroundColor(Color:integer);
+  begin
+  end; { No colors to choose! }
+
+procedure SetBackgroundColor(Color:integer);
+  begin
+  end; { No colors to choose! }
+
+procedure DP(X,Y:integer);     { Display a point.  GrafBase (a global
+                                 variable) contains the address of the
+                                 current screen (hardware or RAM); ColorGlb
+                                 is 0 for black or 255 for white. }
+  begin
+    Inline($8B/$96/ Y /$B8/$03/$00/$21/$D0/$B1/$0D/$D3/$E0/$D1/$EA/$81/
+           $E2/$FE/$FF/$89/$D3/$D1/$E2/$01/$DA/$89/$D3/$B1/$04/$D3/$E2/
+           $29/$DA/$01/$D0/$8B/$96/ X /$89/$D3/$FE/$C9/$D3/$EB/$01/$C3/
+           $88/$D1/$80/$E1/$07/$A1/ GrafBase /$8E/$C0/$26/$8A/$07/$8A/
+           $2E/ ColorGlb /$08/$ED/$74/$09/$BA/$80/$00/$D3/$EA/$08/$D0/
+           $EB/$07/$BA/$7F/$FF/$D3/$EA/$20/$D0/$26/$88/$07);
+  end;
+
+function PD(x,y:integer):boolean;  { Return true if the color of the point at
+                                     X,Y matches ColorGlb }
+  begin
+    PD:=(ColorGlb=0) xor (mem[GrafBase:BaseAddress(y) + x shr 3]
+                          and (128 shr (x and 7)) <> 0);
+  end;
+
+procedure SetBackground8(Background:BackgroundArray);
+  var i:integer;
+  begin
+    for i:=Y1RefGlb to Y2RefGlb do
+      FillChar(mem[GrafBase:BaseAddress(i)+X1RefGlb],X2RefGlb-X1RefGlb+1,
+               Background[i and 7]);
+  end;
+
+procedure SetBackground(byt:byte);
+  var bk:BackgroundArray;
+  begin
+    fillchar(bk,8,byt);
+    SetBackground8(bk);
+  end;
+
+procedure DrawStraight(x1,x2,y:integer);  { Draw a horizontal line from
+                                            x1,y to x2,y }
+  var i,x:integer;
+      DirectModeLoc:boolean;
+  begin
+    if (not ((x1<0) or (x1>XMaxGlb shl 3+7)) and not ((x2<0) or
+       (x2>XMaxGlb shl 3+7)) and ((y>=0) and (y<=YMaxGlb))) then
+     begin
+      DirectModeLoc:=DirectModeGlb;
+      DirectModeGlb:=true;
+      if x1>x2 then
+       begin
+        x:=x1;
+        x1:=x2;
+        x2:=x;
+       end;
+      if x2-x1<16 then
+        for x:=x1 to x2 do dp(x,y)
+      else
+       begin
+        x1:=x1+8;
+        for i:=(x1-8) to (x1 and -8) do dp(i,y);
+        for i:=(x2 and -8) to x2 do dp(i,y);
+        FillChar(mem[GrafBase:BaseAddress(Y)+(X1 Shr 3)],
+                 (X2 Shr 3)-(X1 Shr 3),ColorGlb);
+       end;
+      DirectModeGlb:=DirectModeLoc;
+     end
+  end;
+
+procedure SaveScreen(FileName:wrkstring);  { Save the current screen on disk
+                                             using FileName }
+type sector=array [0..127] of byte;
+     secscreen=array [0..255] of sector;
+var PictureFile:file of sector;
+    pic:^secscreen;
+    i:integer;
+    ioerr:boolean;
+  procedure IOCheck;
+  begin
+    ioerr:=IOResult<>0;
+    if ioerr then Error(27,5);
+  end;
+
+begin
+  ioerr:=false;
+  pic:=ptr(GrafBase,0);
+  assign(PictureFile,FileName);
+  {$I-} rewrite(PictureFile); {$I+}
+  IOCheck;
+  for i:=0 to 255 do
+    if not ioerr then
+     begin
+      {$I-} write(PictureFile,pic^[i]); {$I+}
+      IOCheck;
+     end;
+  if not ioerr then
+   begin
+    {$I-} close(PictureFile); {$I+}
+    IOCheck;
+   end;
+end;
+
+procedure LoadScreen(FileName:wrkstring);  { Load screen from file FileName }
+type sector=array [0..127] of byte;
+     secscreen=array [0..255] of sector;
+var PictureFile:file of sector;
+    pic:^secscreen;
+    i:integer;
+begin
+  pic:=ptr(GrafBase,0);
+  assign(PictureFile,FileName);
+  {$I-} reset(PictureFile); {$I+}
+  if IOResult<>0 then Error(11,5)
+  else
+   begin
+    for i:=0 to 255 do read(PictureFile,pic^[i]);
+    close(PictureFile);
+   end;
+end;
+
+procedure SwapScreen;
+  const SS=$4000; { ScreenSizeGlb+1 }
+  var g:integer;
+  begin
+    if RamScreenGlb then
+     begin
+      g:=seg(ScreenGlb^);
+      Inline($8B/$86/ g /$8E/$C0/$1E/$B8/ HardwareGrafBase /$8E/$D8/$B9/
+             SS /$31/$DB/$8B/$07/$26/$87/$07/$89/$07/$43/$43/$E2/$F5/$1F);
+     end;
+  end;
+
+procedure CopyScreen;  { Copy the contents of the current screen to the other
+                         screen }
+var ToBase:integer;
+begin
+  if RamScreenGlb then
+  begin
+    if GrafBase=HardwareGrafBase then ToBase:=seg(ScreenGlb^)
+    else ToBase:=HardwareGrafBase;
+    move(mem[GrafBase:0000],mem[ToBase:0000],(ScreenSizeGlb+1) shl 1);
+  end;
+end;
+
+procedure InvertScreen;
+  const SS=$4000; { ScreenSizeGlb+1 }
+  var i:integer;
+  begin
+    Inline($1E/$A1/ GrafBase /$8E/$D8/$B9/ SS /$31/$DB/$F7/$17/$43/$43/$E2/
+           $FA/$1F);
+    for i:=350 to 351 do
+      FillChar(mem[GrafBase:BaseAddress(i)],XMaxGlb+1,0);
+  end;
+
