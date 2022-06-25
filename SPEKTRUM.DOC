@@ -1,0 +1,125 @@
+    Datei : SPEKTRUM.DOC
+    -------
+
+
+    Programmbeschreibung:
+    ---------------------
+    berechnet das HFS-Spektrum eines Elementes in Abhängigkeit
+    der A- und B- HFS-Konstanten bei bekannten Drehimpulseigen-
+    werten ( J = Hüllendrehimpuls, I = Kernspin ).
+
+    Die F-, K-, W-Energiewerte für jeweils den unteren bzw. oberen
+    Zustand sowie die Übergangsenergien E(Fu,Fo), unter Beachtung
+    der Auswahlregeln (  Fo - Fu ) = 0, +1, -1, mit entsprechenden
+    Intensitäten werden berechnet und ausgegeben.
+
+    An die Linien lassen sich Lorentz- bzw. Gaussprofile fitten und
+    ausgeben, oder auf Wunsch als Summenprofil am Bildschirm oder
+    auf dem Drucker anzeigen lassen.
+
+    Für die Druckerausgabe benötigt man bei der HERCULES-Karte das
+    Systemprogramm HGC.COM mit den Optionen (HGC FULL HPRINT).
+    Hiernach ist der residente Teil des Print-Screen Hardcopy-
+    Programms auf die Grafikseite "umgebogen", und bei Drücken der
+    Tastenkombination <Shift> + <Prt-Sc> + n  erscheint ein Hardcopy
+    auf dem jeweils angeschlossenem Drucker, der Ausdruck erfolgt
+    im Format DIN A4:
+
+    ( n = 0, Ausdruck der ersten  Grafikseite )
+    ( n = 1, Ausdruck der zweiten Grafikseite )
+
+    Für weitere Informationen siehe SPEKTRUM.TXT
+
+    (C) 1986/1987  Institut für Angewandte Physik
+                   der Universität Bonn
+
+
+    Autoren:
+    --------
+    Thomas Fabula, Wolfgang Rupprecht
+    ( njsymbol.inc : Thomas Brenner )
+
+
+    Parameterbereiche:
+    ------------------
+    A-, B-Faktoren  : 1 - 9999 [MHz]
+    I,J Drehimpulse : 0.5 - 99 [h]
+    Untergrund      : 0 - 999  [MHz]
+    FWHM            : 1 - 999  [MHz]    ( bei Gauss > 500 [MHz] )
+    Auflösung       : 100 - 5000 Punkte ( ACHTUNG: max. 5000 !  )
+
+
+    Programmiersprache:
+    -------------------
+    Turbo-Pascal, Version 3.01A (opt. 8087-Coprozessor)
+
+
+    Betriebssystem:
+    ---------------
+    IBM PC-DOS, Version 3.10
+
+
+    Grafikkarte:
+    ------------
+    HERCULES, CGA, EGA abhängig von der Borland Include-Datei
+    für die Grafikroutinen GRAPHIX.SYS
+
+
+    Drucker:
+    --------
+    Alle IBM-kompatible Drucker, die vom HGC Treiberprogramm
+    unterstützt werden (EPSON FX 80/100, NEC P6, etc...)
+
+
+    Bemerkungen:
+    ------------
+    Die Auflösung der Spektren (=Anzahl der Punkte) geht stark
+    in die Dauer der Rechenzeit ein. Es empfiehlt sich die
+    Auflösung für Testberechnungen auf 1000-2000 zu setzen.
+    ( Bei 4.77 MHz Systemtakt sollte man noch kleinere Werte
+      wählen...)
+    Sollte das Programm bei der Berechnung aussteigen, und der
+    Rechner sich verabschieden, aber hierbei im Grafik-Modus
+    verbleiben, so muss das HERCULES Utility-Programm HFIX.COM
+    aufgerufen werden, um die Grafik- & Textseite zu restau-
+    rieren.
+    Ersatz kann auch ein selbstgeschriebenes Programm leisten,
+    welches lediglich mit InitGraphic; die Grafikseite erneut
+    initialisiert und mit LeaveGraphic; sie wieder verl„át.
+    ( Beispielprogramm: HFIXT.COM )
+
+
+
+    Benötigte Dateien:
+    ------------------
+
+    SPEK     BAT  : Batch-Datei für SPEKTRUM
+    S        PAS  : Source des Hauptprogramms
+    S        COM  : Ausführbares SPEKTRUM-Programm
+    S87      COM  : Ausführbares SPEKTRUM-Programm (8087/80287)
+    SPEKTRUM DAT  : Letztgültige Protokolldatei
+    SPEKTRUM DEF  : Definitionsfile für EPSON Drucker
+    SPEKTRUM TXT  : Benutzerinfo (ASCII-Datei)
+    SPEKTRUM DOC  : ...diese Datei
+    SPEKTRUM PAR  : letztgültige Parameter
+    SPROFIL  PAR  : letztgültige Profilparameter
+
+    SDECLARE INC  : Include-Datei für Deklarationen
+    SFILE    INC  : Include-Datei für I/O
+    SPARAM   INC  : Include-Datei für Parameter einlesen
+    SFUNCT   INC  : Include-Datei für zus. Funktionen
+    SRECHNE  INC  : Include-Datei für Berechnungen
+    SPROFIL  INC  : Include-Datei für Lorentz/Gauss-Profilberechnung
+    SREALIN  INC  : Include-Datei für REAL-Zahl einlesen
+    PLOTTER  INC  : Include-Datei für Plotteransteuerung (HP 7475A)
+    NJSYMBOL INC  : Include-Datei für nj-Symbole berechnen
+
+    RS232    BAT  : Batch-Datei für Anpassung COM1:
+    HFIXT    PAS  : Source für Grafik- & Textseite Restauration
+    HFIXT    COM  : Grafik- & Textseite restaurieren
+    HFIX     COM  : Grafikseite restaurieren (HERCULES-Programm)
+    HARDCOPY COM  : Druckertreiber
+    ERROR    MSG  : Fehlermeldungen (Turbo-Pascal)
+    ???????? FON  : Schriftarten (Fonts) für Turbo-Pascal
+
+
