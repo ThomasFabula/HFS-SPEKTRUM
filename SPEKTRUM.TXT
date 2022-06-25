@@ -1,0 +1,29 @@
+  -------------
+  I SPEKTRUM: I   Berechnung der HFS-Aufspaltung
+  -------------
+
+Folgende Parameter sind vom Benutzer einzugeben:
+
+Au [MHz] = A-Faktor des unteren Zustands
+Ao [MHz] = A-Faktor des oberen Zustands
+Bu [MHz] = B-Faktor des unteren Zustands
+Bo [MHz] = B-Faktor des oberen Zustands
+Ju       = HueÅllendrehimpuls des unteren Zustandes
+Jo       = HÅuellendrehimpuls des oberen Zustandes
+I        = Kernspin des Atoms
+Comment  = 1 Zeile (Kommentar zum Spektrum)
+
+( Defaultwerte des Spektrums in der Datei     - SPEKTRUM.PAR )
+( Profilparameter: Untergrund/FWHM/Aufloesung - SPROFIL.PAR  )
+
+
+Das Programm berechnet aus oben genannten Parametern die Energiewerte
+fÅr den jeweils unteren W(Fu) bzw. oberen Zustand W(Fo) sowie die
+Energiedifferenzen E(Fu,Fo) = W(Fo) - W(Fu) und deren Intensitaeten,
+welche als Linien im HFS-Spektrum grafisch dargestellt werden. Es kann
+zwischen Lorentz- und Gau·profil gewaehlt werden, die ihrerseits
+aufsummiert als Spektrum dargestellt werden koennen. Bei Bedarf kann das
+Spektrum auf einem Drucker ausgegeben werden.
+
+Die berechneten F-, K-, W- & Energiewerte E(Fu,Fo) lassen sich in
+einer Datei abspeichern. ( Defaultdatei : SPEKTRUM.DAT )
