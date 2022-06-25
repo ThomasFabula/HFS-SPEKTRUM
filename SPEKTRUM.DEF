@@ -1,0 +1,12 @@
+width		=8
+topbit		=7
+setup		=\1B@\1B3\17\1B8\41
+header		=\1B*\02\D0\02\41
+tail		=\0D\0A\41
+restore		=\1B@\41
+normal		=1
+normal alt	=2
+reverse		=3
+reverse	alt	=4
+normal both	=5
+reverse	both	=6
