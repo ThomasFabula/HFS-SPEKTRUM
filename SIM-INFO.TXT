@@ -1,0 +1,93 @@
+             ================================
+             ===                          ===
+             ===   Datei : SIM-INFO.TXT   ===
+             ===                          ===
+             ================================
+
+
+Bei dieser Diskette handelt es sich um eine Sammlung von
+Simulationsprogrammen f¸r die Auswertung von Hyperfein-
+strukturmessungen (Hfs).
+
+Im folgenden wird kurz der Einsatz der Programme erkl‰rt.
+F¸r ausf¸hrlichere Informationen sei auf die umfangreiche
+Dokumentationen in [1, 2 und 3] und auf die Quelldateien
+der einzelnen Programme verwiesen.
+
+
+HFSFIT:
+-------
+Dieses Programm berechnet die A- und B-Faktoren eines
+‹bergangs, bei dem die F-Quantenzahlen (Fu, Fo) bereits
+zugeordnet wurden. Gleichzeitig wird eine Parameterdatei
+HFSSPEK.PAR fÅr die Spektrumsimulation mit HFSSPEK generiert.
+Batchdatei : SIM.BAT, HF.BAT und HS.BAT
+
+
+HTOS:
+-----
+Diese Utility generiert eine Parameterdatei SPEKTRUM.PAR f¸r
+einen Simulationslauf mit dem Programm Spektrum.
+
+
+HFSSPEK:
+--------
+Dieses Programm berechnet das Hyperfeinstruktur (Hfs)
+Spektrum  e i n e s  ungeradzahligen Isotops.
+Batchdatei : HSPEK.BAT
+
+
+SPEKTRUM:
+---------
+Dieses Programm berechnet das Hfs-Spektrum eines Elementes
+mit zus‰tzlich max. 6 geradzahligen Isotopen.
+Batchdatei : SPEK.BAT
+
+
+ISOTOP:
+-------
+Dieses Programm berechnet das Hfs-Spektrum zweier ungeradzahliger
+Isotope (Eingabeparameter: IS, Rel. H‰ufigkeiten der beiden Isotope).
+Batchdatei : ISO.BAT
+
+
+(ISOTOPG:)
+----------
+Dieses Programm ist aus dem ISOTOPIE-Programm zu erstellen.
+Die Erweiterung ist analog wie von HFSSPEK zu SPEKTRUM.
+Das Programm berechnet das Hfs-Spektrum zweier ungeradzahliger
+Isotope mit zus‰tzlich max. 6 geradzahligen Isotopen.
+(Eingabeparameter: IS, Rel. H‰ufigkeiten der beiden Isotope).
+
+
+ASPEKTRUM:
+----------
+Dieses Programm entspricht dem SPEKTRUM Programm, generiert aber
+zus‰tzlich eine Koordinatendatei SPEKTRUM.CAD, mit deren Hilfe das
+simulierte Spektrum durch AutoCAD (ab V2.5) eingelesen werden kann.
+Anschlieﬂend kann das Spektrum editiert und geplottet werden.
+
+
+SACAD:
+------
+Diese Utility generiert eine Datenaustauschdatei SPEKTRUM.DXF, die
+von AutoCAD (ab V2.5) eingelesen werden kann. Die zugehˆrige Batchdatei
+ist SAC.BAT und erledigt die notwendigen Transformationen.
+
+
+HFSMENU.BAT  -  startet die entsprechenden Batch-Dateien von DOS.
+                falls die entsprechenden Dateien im selben Unter-
+                verzeichnis sind.
+
+
+Th. Fabula
+
+
+
+
+[1] :  Th. Fabula, Diplomarbeit, Univ. Bonn 1987
+
+[2] :  Th. Fabula, Software-Bibliothek MES, Univ. Bonn 1987
+
+[3] :  Th. Fabula, PC-Auswerteprogramme f¸r Hfs-Messungen, Univ. Bonn 1987
+
