@@ -86,7 +86,7 @@ gerader Isotope (z.B.: 92Mo, 94Mo, 96Mo, 98Mo und 100Mo).
 Dieses Programm berechnet aus eingegebenen Meßwerten HFS-Parameter. Die Parameter tragen dabei folgende 
 interne Nummerierung: 
 
-1    S1    			  Schwerpunkt des 1. Isotops          
+1    S1    		Schwerpunkt des 1. Isotops          
 2    A(OBEN)  		A-Faktor          "                  
 3    A(UNTEN) 		A-Faktor          "                  
 4    B(OBEN)  		B-Faktor          "                  
@@ -109,10 +109,10 @@ Natürlich ist es auch nicht erlaubt Schleifen zu bilden.
  
 Eingabe - Daten:                                            
 
-ZEILE  SPALTE   FORMAT        NAME        BEZEICHNUNG
+ZEILE  SPALTE   FORMAT        	NAME        	BEZEICHNUNG
 0                C80        	KOPF       	Überschrift
-1                 I        	  NISOTOP     Anzahl Isotope
-1                 I       	  FIXED_PAR   Anzahl festgehaltener Parameter
+1                 I        	NISOTOP     	Anzahl Isotope
+1                 I       	FIXED_PAR   	Anzahl festgehaltener Parameter
 1                 R         	XJO        	J oberen Zustand
 1                 R         	XJU        	J unterer Zustand
 1                 R         	XI1        	I Kernspin 1.Isotop
@@ -155,25 +155,25 @@ Eingabeparameter sind die Bezeichnung des Elementes, die Drehimpulsquantenzahlen
 (A-, und B-Faktor) der beiden Feinstrukturzustände. Folgende Parameter sind dem Programm vom Benutzer in dieser Reihenfolge 
 einzugeben (Gültigkeitsbereiche der Parameter):
 
-1.)	Ao	:	A-Faktor für den oberen Zustand	( 0 - 9999 [MHz] )
+1.)	Ao	 :	A-Faktor für den oberen Zustand	( 0 - 9999 [MHz] )
 
-2.)	Au	:	A-Faktor für den unteren Zustand ( 0 - 9999 [MHz] )
+2.)	Au 	 :	A-Faktor für den unteren Zustand ( 0 - 9999 [MHz] )
 
-3.)	Bo	:	B-Faktor für den oberen Zustand ( 0 - 9999 [MHz] ) 
+3.)	Bo	 :	B-Faktor für den oberen Zustand ( 0 - 9999 [MHz] ) 
 
-4.)	Bu	:	B-Faktor für den unteren Zustand ( 0 - 9999 [MHz] ) 
+4.)	Bu	 :	B-Faktor für den unteren Zustand ( 0 - 9999 [MHz] ) 
 
-5.)	Jo	:	Hüllendrehimpuls des oberen Zust. ( 0.5 - 99 [h] )
+5.)	Jo	 :	Hüllendrehimpuls des oberen Zust. ( 0.5 - 99 [h] )
 
-6.)	Ju	:	Hüllendrehimpuls des unteren Zust. ( 0.5 - 99 [h] )
+6.)	Ju	 :	Hüllendrehimpuls des unteren Zust. ( 0.5 - 99 [h] )
 
-7.)	I  	:	Kernspin des Atoms ( 0.5  - 99 [h] )
+7.)	I  	 :	Kernspin des Atoms ( 0.5  - 99 [h] )
 				 
-8.)	Untrgnd  :  Untergrund  ( 0 - 999 )
+8.)	Untrgnd  :  	Untergrund  ( 0 - 999 )
 
-9.)	FWHM     :  Halbwertsbreite der Hfs-Linien ( 1 - 999.99 [MHz] )
+9.)	FWHM     :  	Halbwertsbreite der Hfs-Linien ( 1 - 999.99 [MHz] )
 
-10.) Auflsng  :  Grafische Auflösung der Frequenzachse ( 100 - 500 )
+10.) 	Auflsng  :  	Grafische Auflösung der Frequenzachse ( 100 - 500 )
  
 Für die Kennzeichnung einer Simulation lassen sich ferner noch der Name des Elementes und die spektroskopischen 
 Bezeichnungen des unteren sowie oberen Zustandes eingeben.
@@ -189,7 +189,7 @@ und in einer Schleife auf ihre Richtigkeit überprüft wurden, wird der Benutzer
 Daten gefragt. Der Dateiname darf höchstens aus acht Buchstaben bestehen, die Erweiterung .DAT wird automatisch generiert. 
 Anhand der eingegebenen Parameter berechnet das Programm für den unteren und oberen Zustand folgende Werte:
 
-Quantenzahlen F:
+Quantenzahlen F: 
 F = I + J, ... , * I - J *
 
 Casimir-Werte K:
@@ -202,7 +202,7 @@ Linienenergien E:
 E = * W(Fo) - W(Fu) *    unter Beachtung der  
 
 Auswahlregeln:  		
-  1.  * F * = * Fu - Fo * = 0, 1
+  	1.  * F * = * Fu - Fo * = 0, 1
 	2.  Fu = 0  ->  Fo = 0  verboten.
 
 Den Übergängen, die den Auswahlregeln entsprechen, werden die zugehörigen relativen Linienintensitäten nachfolgender 
@@ -210,7 +210,7 @@ Gleichung zugeordnet:
 
 Intensitäten: 
 							 Jo   Fo   I	²
-Intensity =   (2Fo + 1) (2Fu + 1)                 
+Intensity =   						(2Fo + 1) (2Fu + 1)                 
 							 Fu   Ju   1
 
 und anschließend die stärkste Komponente auf 100 % normiert. 
@@ -252,18 +252,18 @@ dem Benutzer kurz die Möglichkeiten des Programms (SPEKTRUM.TXT).
 
 Zum Programmablauf benötigte Dateien:
 
-HSPEK.BAT  		-  Batch-Datei 
-H.COM		      -  ausführbares HFSSPEK-Programm
-HFSSPEK.PAR	  -  Parameter-Datei
-HFSSPEK.TXT	  -  Kurzinfo für Benutzer
-*.FON			    -  Turbo-Pascal Zeichensätze
-ERROR.MSG		  -  Fehlermeldungsdatei für Turbo-Grafik
+HSPEK.BAT  	-  Batch-Datei 
+H.COM		-  ausführbares HFSSPEK-Programm
+HFSSPEK.PAR	-  Parameter-Datei
+HFSSPEK.TXT	-  Kurzinfo für Benutzer
+*.FON		-  Turbo-Pascal Zeichensätze
+ERROR.MSG	-  Fehlermeldungsdatei für Turbo-Grafik
 
 Systeminterne Programme:
 
-HGC.COM		    -  Hercules Grafiktreiber
-HGC.EXE		    -  Hercules Grafiktreiber
-RS232.BAT		  -  Plotterinitialisierung
+HGC.COM		-  Hercules Grafiktreiber
+HGC.EXE		-  Hercules Grafiktreiber
+RS232.BAT	-  Plotterinitialisierung
 
 Abb. 3:  Simuliertes Spektrum (HFSSPEK)
 
@@ -278,9 +278,9 @@ Abb. 3:  Simuliertes Spektrum (HFSSPEK)
 
 3.1	Hauptprogramme    (*.PAS)
 3.2	Include-Dateien   (*.INC)
-3.3	Textdateien	      (*.TXT)
+3.3	Textdateien	  (*.TXT)
 3.4	Parameterdateien  (*.PAR)
-3.5	Datendateien	    (*.DAT)
+3.5	Datendateien	  (*.DAT)
 
 
 4.	Hinweise zur Kompilierung
