@@ -1,0 +1,330 @@
+
+PC-Auswerteprogramme für Hfs-Messungen
+
+	Thomas Fabula
+	IAP Bonn 1987
+
+
+	Institut für Angewandte Physik 
+	der Rheinischen Friedrich-Wilhelms-Universität Bonn
+ 
+
+Inhaltsverzeichnis
+
+Abbildungsverzeichnis
+
+1.	Einführung
+
+2. 	Auswerte- und Simulationsprogramme
+
+2.1	HFSFIT
+2.2	HFSSPEK
+2.3	SPEKTRUM
+2.4	ISOTOP
+2.5	ISOTOPG
+
+
+3.	Listings
+
+3.1	Hauptprogramme    (*.PAS)
+3.2	Include-Dateien   (*.INC)
+3.3	Text-Dateien	    (*.TXT)
+3.4	Parameter-Dateien (*.PAR)
+3.5	Daten-Dateien	    (*.DAT)	 
+3.6	Batch-Dateien	    (*.BAT)
+
+
+4.	Hinweise zur Kompilierung
+
+4.1	Hardwarevoraussetzungen
+4.2	Softwarevoraussetzungen
+
+Literaturverzeichnis
+ 
+Abbildungsverzeichnis:
+
+Abb. 1	:	Software-Verbund					
+Abb. 2	:	Flußdiagramm SPEKTRUM				
+Abb. 3	:	Simuliertes Spektrum (HFSSPEK)
+Abb. 4	:	Simuliertes Spektrum (SPEKTRUM)
+Abb. 5	:	Simuliertes Spektrum (ISOTOP)	
+Abb. 6	:	Simuliertes Spektrum (ISOTOPG)
+ 
+1. Einleitung:
+
+Für die Auswertung von Hfs-Messungen stehen folgende Programme auf dem PC zur Verfügung:
+
+HFSFIT:  
+Dieses Programm stellt die PC-Version des auf der IBM3081 bereits erfolgreich eingesetzten HFSFIT-Programms dar. 
+Unter der Voraussetzung, daß den gemessenen Linien (Ei, Ei) die entsprechenden Übergänge (Fu, Fo) bereits zugeordnet 
+wurden, berechnet das Programm die A- und B-Faktoren für den entsprechenden FS-Übergang. Das Programm erzeugt 
+Parameterdateien (*.PAR) für die anschließende Spektrensimulation mit den Programmen HFSSPEK bzw. SPEKTRUM.
+( Batchdatei : HF.BAT )
+
+HFSSPEK:
+Dieses Programm berechnet das Hfs-Spektrum eines ungeradzahligen Isotops (z.B.: 51V).
+( Batchdatei : HSPEK.BAT )
+
+SPEKTRUM:
+Dieses Programm berechnet das Spektrum eines ungeradzahligen Isotops (z.B.: 91Zr) und max. sechs weiterer gerader 
+Isotope (z.B.: 90Zr, 92Zr, 94Zr und 96Zr).
+( Batchdatei : SPEK.BAT )
+
+ISOTOP:
+Dieses Programm berechnet das Hfs-Spektrum zweier ungeradzahliger Isotope (Hfs-Aufspaltung beider Isotope).
+( Batchdatei : ISO.BAT )
+
+ISOTOPG:
+Dieses Programm berechnet das Spektrum zweier ungeradzahliger Isotope (z.B.: 95Mo, 97Mo) und max. sechs weiterer 
+gerader Isotope (z.B.: 92Mo, 94Mo, 96Mo, 98Mo und 100Mo).
+( Batchdatei : ISOG.BAT )
+ 
+2. Auswerteprogramme:
+
+2.1	HFSFIT
+
+Dieses Programm berechnet aus eingegebenen Meßwerten HFS-Parameter. Die Parameter tragen dabei folgende 
+interne Nummerierung: 
+
+1    S1    			  Schwerpunkt des 1. Isotops          
+2    A(OBEN)  		A-Faktor          "                  
+3    A(UNTEN) 		A-Faktor          "                  
+4    B(OBEN)  		B-Faktor          "                  
+5    B(UNTEN) 		B-Faktor          "                  
+6    S1       		Schwerpunkt des 2. Isotops          
+7    A(OBEN)  		A-Faktor          "                  
+8    A(UNTEN) 		A-Faktor          "                  
+9    B(OBEN)  		B-Faktor          "                 
+10   B(UNTEN) 		B-Faktor          "          
+
+Dabei können einzelne Parameter relativ zu einem anderen festgehalten werden, oder auch absolut auf einen bestimmten Wert 
+gehalten werden.
+
+Wenn alle Hfs-Konstanten festgehalten werden, wird kein Fit durchgeführt. Es werden stattdessen die Frequenzen und die 
+rel. Intensitäten der einzelnen Komponenten berechnet und Buchstaben Bezeichnnungen für die Komponenten ermittelt.  
+
+Beschränkungen des Programms bestehen darin, daß nur max. 100 Meßwerte verarbeitet werden können.
+Es ist auch nicht erlaubt einen Parameter auf einen Parameter festzuhalten, der selbst durch ein Verhältnis bestimmt ist. 
+Natürlich ist es auch nicht erlaubt Schleifen zu bilden.
+ 
+Eingabe - Daten:                                            
+
+ZEILE  SPALTE   FORMAT        NAME        BEZEICHNUNG
+0                C80        	KOPF       	Überschrift
+1                 I        	  NISOTOP     Anzahl Isotope
+1                 I       	  FIXED_PAR   Anzahl festgehaltener Parameter
+1                 R         	XJO        	J oberen Zustand
+1                 R         	XJU        	J unterer Zustand
+1                 R         	XI1        	I Kernspin 1.Isotop
+1                 R         	XI2        	I Kernspin 2.Isotop
+
+Dieser Wert muß auch eingegeben werden, wenn NISOTOP = 1 ist. Wenn Parameter festgehalten werden, folgt für jeden 
+der 'FIXED_PAR' Parameter eine Zeile vom Typ 2.
+
+2                 I       NFP[I]      Nummer des festgeh. Parameters
+2                 R       VALFP[I]    Wert oder Verhältnis des festen Parameters
+2                 I       REFP[I]     Bezugs-Parameter
+                                         
+Ist REFP[I] = 0, so wird der Parameter auf den Wert VALFP[I] festgehalten. Parameter dürfen auch über ein Verhältnis 
+auf einen absolut festgehaltenen Parameter bezogen werden. Nicht erlaubt ist jedoch der Bezug auf einen 'RELATIV' 
+festgehaltenen Parameter.
+
+Es folgen die zeilen mit den Meßwerten:                     
+    3    1    C1    ISOTOP[I] 
+		2        = Datum gehört zum 2. Isotop
+		BELIEBIG = Datum gehört zum 1. Isotop
+    3    2-5  C4    XNAME[I]   Bezeichnung des i.ten Eingabewertes		     
+    3     6    C1    LIMIT            
+
+wird hier ein Zeichrn ungleich BLANK eingegeben, so wird dies als Ende des Datensatzes verstanden.
+3            R       FO[I]     F-Quantenzahl
+3            R       FU[I]     F-Quantenzahl
+3            R       Y[I]      Meßwert      
+3            R       DY[I]     Fehler d. Meßwertes
+
+
+2.1.1 HTOS
+
+HFSSPEK.PAR - to - SPEKTRUM.PAR
+
+
+2.2	HFSSPEK
+
+Das Programm HFSSPEK berechnet und zeichnet das Hyperfeinstrukturspektrum eines Übergangs zwischen zwei Feinstrukturzuständen. 
+Eingabeparameter sind die Bezeichnung des Elementes, die Drehimpulsquantenzahlen (I, Ju, Jo) sowie die Hfs-Konstanten 
+(A-, und B-Faktor) der beiden Feinstrukturzustände. Folgende Parameter sind dem Programm vom Benutzer in dieser Reihenfolge 
+einzugeben (Gültigkeitsbereiche der Parameter):
+
+1.)	Ao	:	A-Faktor für den oberen Zustand	( 0 - 9999 [MHz] )
+
+2.)	Au	:	A-Faktor für den unteren Zustand ( 0 - 9999 [MHz] )
+
+3.)	Bo	:	B-Faktor für den oberen Zustand ( 0 - 9999 [MHz] ) 
+
+4.)	Bu	:	B-Faktor für den unteren Zustand ( 0 - 9999 [MHz] ) 
+
+5.)	Jo	:	Hüllendrehimpuls des oberen Zust. ( 0.5 - 99 [h] )
+
+6.)	Ju	:	Hüllendrehimpuls des unteren Zust. ( 0.5 - 99 [h] )
+
+7.)	I  	:	Kernspin des Atoms ( 0.5  - 99 [h] )
+				 
+8.)	Untrgnd  :  Untergrund  ( 0 - 999 )
+
+9.)	FWHM     :  Halbwertsbreite der Hfs-Linien ( 1 - 999.99 [MHz] )
+
+10.) Auflsng  :  Grafische Auflösung der Frequenzachse ( 100 - 500 )
+ 
+Für die Kennzeichnung einer Simulation lassen sich ferner noch der Name des Elementes und die spektroskopischen 
+Bezeichnungen des unteren sowie oberen Zustandes eingeben.
+
+Um unnötige Fehlerquellen auszuschließen und die Benutzerfreundlichkeit des Programms zu erhöhen, werden alle obigen 
+Parameter in temporären Dateien (HFSSPEK.PAR, HPROFIL.PAR) zwischengespeichert und bei Programmbeginn automatisch eingelesen. 
+Beim ordnungsgemäßen Verlassen des Programms werden die jeweils letztgültigen Parameter für den nächsten Programmlauf gesichert, 
+sodaß das Programm ohne zeitaufwendige Neueingabe der Parameter wieder gestartet werden kann.
+
+Programmablauf:
+Im Flußdiagramm Abb. 2 ist der Ablauf des Simulationsprogramms detailliert dokumentiert. Nachdem die Parameter eingelesen 
+und in einer Schleife auf ihre Richtigkeit überprüft wurden, wird der Benutzer nach einem Dateinamen für die Sicherung der 
+Daten gefragt. Der Dateiname darf höchstens aus acht Buchstaben bestehen, die Erweiterung .DAT wird automatisch generiert. 
+Anhand der eingegebenen Parameter berechnet das Programm für den unteren und oberen Zustand folgende Werte:
+
+Quantenzahlen F:
+F = I + J, ... , * I - J *
+
+Casimir-Werte K:
+K = F ( F + 1 ) - I ( I + 1 ) - J ( J + 1 )
+
+Energieniveaus W:
+W = ½h {KA + ¼[ 3(K(K+1)-I(I+1)J(J+1))B / (I(2I-1)J(2J-1)]}
+
+Linienenergien E:
+E = * W(Fo) - W(Fu) *    unter Beachtung der  
+
+Auswahlregeln:  		
+  1.  * F * = * Fu - Fo * = 0, 1
+	2.  Fu = 0  ->  Fo = 0  verboten.
+
+Den Übergängen, die den Auswahlregeln entsprechen, werden die zugehörigen relativen Linienintensitäten nachfolgender 
+Gleichung zugeordnet:
+
+Intensitäten: 
+							 Jo   Fo   I	²
+Intensity =   (2Fo + 1) (2Fu + 1)                 
+							 Fu   Ju   1
+
+und anschließend die stärkste Komponente auf 100 % normiert. 
+
+Abb. 2:  Flußdiagramm HFSSPEK
+
+
+Um dem Benutzer eine schnelle Kontrolle zu ermöglichen, werden neben der Anzahl der Komponenten im Hfs-Spektrum 
+alle berechneten Werte auf dem Bildschirm angezeigt. Hierauf erfolgt der Grafikaufbau und die Abfrage nach der 
+gewünschten Art der Linienform. Der Benutzer kann zwischen einem Lorentz- oder Gaussprofil wählen:
+
+Lorentzprofil:  L (E)  ~   FWHM² / [ (E - E0)² + FWHM² / 4 ]
+
+Gaussprofil:    G (E)  ~   exp( - ½ [ (E - E0) / FWHM ]² )
+
+Um lediglich einen schnellen Überblick über die qualitative Form des Spektrums zu erlangen, besteht die Möglichkeit, 
+das Spektrum in einer vereinfachten Darstellung auf dem Bildschirm auszugeben. Bei dieser Programmoption werden die Übergänge 
+lediglich als vertikale Striche dargestellt, was sich sehr günstig auf die Rechenzeit auswirkt und diese extrem verkürzt. 
+Danach hat der Benutzer die Möglichkeit, das Summenprofil berechnen und einzeichnen zu lassen. Ein wichtiger Aspekt beim
+Programm war es, das Spektrum als aufsummiertes Liniensignal auf dem Bildschirm darstellen zu lassen. In dieser Darstellung
+läßt sich der Einfluß der Linienbreite (FWHM) der Einzellinien auf das Gesamtsummensignal gut studieren. 
+
+Nachdem das Spektrum auf dem Bildschirm aufgebaut wurde, werden die wichtigsten Parameter in einem Fenster am unteren 
+Bildschirmrand angezeigt. Die Angaben der Energien E(min) und E(max) sowie des Linienschwerpunktes erlauben die Skalierung 
+der Energieachse des Hfs-Multipletts (siehe Abb. 3).
+
+Durch Vergleich des simulierten Spektrums mit experimentell gewonnenen Spektren wird dem Experimentator die Identifizierung 
+der gemessenen Linien erleichtert. Entspricht das "simulierte" Spektrum in der Verteilung seiner Komponenten dem des gemessenen 
+Hfs-Spektrums, so kann der Benutzer die letztgültigen Parameter (*.PAR) und alle berechneten Werte in ASCII-Dateien (*.DAT) 
+abspeichern lassen, ansonsten geht das Programm zur Parametereingabe zurück.
+
+Bei Bedarf kann ein Ausdruck des Bildschirminhalts auf dem angeschlossenen Drucker erfolgen (Prnt-Scr <0>), ohne das Programm 
+unterbrechen zu müssen. Am Ende des Programms kann ein Kommentar zum Simulationslauf (max. 80 Zeichen) zwecks Dokumentation 
+eingegeben werden.
+
+Das Simulationsprogramm wurde in der Programmiersprache Turbo-Pascal erstellt und wird auf Betriebssystemebene durch eine 
+Stapeldatei (Batchjob) gestartet. Diese Stapeldatei nimmt die nötigen Drucker- und Plotterinitialisierungen vor und erklärt 
+dem Benutzer kurz die Möglichkeiten des Programms (SPEKTRUM.TXT).
+
+Zum Programmablauf benötigte Dateien:
+
+HSPEK.BAT  		-  Batch-Datei 
+H.COM		      -  ausführbares HFSSPEK-Programm
+HFSSPEK.PAR	  -  Parameter-Datei
+HFSSPEK.TXT	  -  Kurzinfo für Benutzer
+*.FON			    -  Turbo-Pascal Zeichensätze
+ERROR.MSG		  -  Fehlermeldungsdatei für Turbo-Grafik
+
+Systeminterne Programme:
+
+HGC.COM		    -  Hercules Grafiktreiber
+HGC.EXE		    -  Hercules Grafiktreiber
+RS232.BAT		  -  Plotterinitialisierung
+
+Abb. 3:  Simuliertes Spektrum (HFSSPEK)
+
+
+2.3	SPEKTRUM
+
+2.4	ISOTOP
+
+2.5	ISOTOPG
+
+3.	Listings
+
+3.1	Hauptprogramme    (*.PAS)
+3.2	Include-Dateien   (*.INC)
+3.3	Textdateien	      (*.TXT)
+3.4	Parameterdateien  (*.PAR)
+3.5	Datendateien	    (*.DAT)
+
+
+4.	Hinweise zur Kompilierung
+
+4.1	Hardwarevoraussetzungen
+4.2	Softwarevoraussetzungen
+
+
+Benötigte Dateien:
+
+SPEK     BAT  	: Batch-Datei für SPEKTRUM
+S        PAS  	: Source des Hauptprogramms
+S        COM  	: Ausführbares SPEKTRUM-Programm
+S87      COM  	: Ausführbares SPEKTRUM-Programm (8087/80287)
+SPEKTRUM DAT  	: Letztgültige Protokolldatei
+SPEKTRUM TXT  	: Benutzerinfo (ASCII-Datei)
+SPEKTRUM DOC  	: Kurzdokumentation zu SPEKTRUM
+SPEKTRUM PAR  	: letztgültige Parameter
+SPROFIL  PAR  	: letztgültige Profilparameter
+SDECLARE INC  	: Include-Datei für Deklarationen
+SFILE    INC  	: Include-Datei für I/O
+SPARAM   INC  	: Include-Datei für Parameter einlesen
+SFUNCT   INC  	: Include-Datei für zus. Funktionen
+SRECHNE  INC  	: Include-Datei für Berechnungen
+REALIN   INC   	: Include-Datei für REAL-Zahl einlesen
+PLOTTER  INC  	: Include-Datei für Plotteransteuerung (HP 7475A)
+NJSYMBOL INC  	: Include-Datei fr nj-Symbole berechnen
+RS232    BAT  	: Batch-Datei für Anpassung der seriellen  Schnittstelle (COM1)
+HFIXT    PAS  	: Source für Grafik- & Textseite Restauration
+HFIXT    COM  	: Grafik- & Textseite restaurieren
+HFIX     COM  	: Grafikseite restaurieren (HERCULES-Programm)
+ERROR    MSG  	: Fehlermeldungen (Turbo-Pascal)
+???????? FON  	: Schriftarten (Fonts) für Turbo-Pascal
+
+
+Literaturverzeichnis
+
+[1]	:	Stephanus Büttgenbach, Frank Träber, Horst Roeder, Programm HFSFIT, Univ. Bonn 1982/83
+
+[2]	:	Peter Unkel, Staatsexamensarbeit, Univ. Bonn 1983
+
+[3]	:	Thomas Fabula, Diplomarbeit, Univ. Bonn 1987
+
+[4]	:	Thomas Fabula, Programm-Bibliothek MES,	Univ. Bonn 1987
+
+[5]	:	Stephanus Büttgenbach, Frank Träber, Horst Roeder, Programm MULTIFIT, Univ. Bonn 1982/83
+
