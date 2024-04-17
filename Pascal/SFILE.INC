@@ -83,7 +83,7 @@ procedure parameter_save;
 begin
   clrscr;
   gotoxy(1,3);
-  write('Letztgltiger Parametersatz wird gespeichert in SPEKTRUM.PAR');
+  write('LetztgÂltiger Parametersatz wird gespeichert in SPEKTRUM.PAR');
   gotoxy(1,9); write('                                                ');
   gotoxy(1,9);
   write('Kommentar zum Datensatz:');
@@ -139,7 +139,7 @@ end;
 procedure profil_parameter_save;
 begin
   gotoxy(1,4);
-  write('Letztgltige Profilparameter werden gespeichert in SPROFIL.PAR');
+  write('LetztgÂltige Profilparameter werden gespeichert in SPROFIL.PAR');
   untergrund:=untergrund-205;
   profildatei:='SPROFIL.PAR';
   assign(filvar,profildatei);
