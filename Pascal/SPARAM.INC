@@ -48,7 +48,7 @@ begin
     gotoxy(1,9);
     writeln('Welcher Uebergang soll betrachtet werden ?');
     gotoxy(1,10);
-    write(' öbergang von Zustand           : ',defaultvon);
+    write(' ≈°bergang von Zustand           : ',defaultvon);
     gotoxy(35,10);
     readln(strx1);
     gotoxy(1,11);
@@ -127,7 +127,7 @@ begin
       if xfwhm<>0 then FWHM:=xfwhm;
 
       gotoxy(43,zei+2); writeln(aufloesung:4);
-      xaufl:=realin(30,zei+2,'Auflîsung  = ',4);
+      xaufl:=realin(30,zei+2,'Aufl‚Äùsung  = ',4);
       if xaufl<>0 then aufloesung:=trunc(xaufl);
 
       writeln(#7);
@@ -147,7 +147,7 @@ begin
         gotoxy(1,21);
         for l:=1 to 80 do write(#205);
         gotoxy(1,20);
-        writeln('ACHTUNG : Drehimpulse Ju, Jo und I mÅssen ungleich Null sein !');
+        writeln('ACHTUNG : Drehimpulse Ju, Jo und I m¬Åssen ungleich Null sein !');
         write(#7,#7,#7);
         lowvideo;
         for t:=1 to 10000 do;
