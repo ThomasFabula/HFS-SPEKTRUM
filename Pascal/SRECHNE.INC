@@ -60,7 +60,7 @@ begin
     if test then writeln('Ku(',n,') = ',ku[n]:10:1);
   end;
   tabs(t);
-  { Berechnung fr den oberen Zustand }
+  { Berechnung fÂr den oberen Zustand }
   for n:=0 to maxxo do
   begin
     j:=jo;
