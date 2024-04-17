@@ -95,7 +95,7 @@ begin
     ClearScreen;
     LoadScreen(spekname);
     gotoxy(50,24);
-    write('Bitte eine Taste drcken...');
+    write('Bitte eine Taste drÂcken...');
     readln(ch);
     LeaveGraphic;
   end;
