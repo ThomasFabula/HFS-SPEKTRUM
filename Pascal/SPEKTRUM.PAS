@@ -5,13 +5,13 @@
     werten ( J, I ).
     Die F-, K-, W- und Energiewerte fuer jeweils den unteren bzw.
     oberen Zustand werden berechnet und ausgegeben.
-    Die Linien lassen sich als einzelne Lorentz- bzw. Gau·profile
+    Die Linien lassen sich als einzelne Lorentz- bzw. GauÁñ≥rofile
     ausgeben, oder auf Wunsch als Summenprofil am Bildschirm oder
     auf dem Drucker anzeigen.
     Fuer die Druckerausgabe benetigt man bei der HERCULES-Karte das
     Systemprogramm HGC.COM mit den Optionen (HGC FULL HPRINT).
     Hiernach ist der residente Teil des Print-Screen Hardcopy-
-    Programms auf die Grafikseite "umgebogen", und bei DrÅcken der
+    Programms auf die Grafikseite "umgebogen", und bei Dr‚Ä¶ken der
     Tastenkombination <Shift>+<Prt-Sc>+<n> erscheint ein Hardcopy
     auf dem jeweils angeschlossenem Drucker.
     ( n = 0, Ausdruck quer  im Format DIN A4 )
@@ -38,7 +38,7 @@ program spektrum;
 {$I sdeclare.inc}         { Deklarationen (const, type, var)         }
 {$I njsymbol.inc}         { Berechnung der nj-Symbole    (T.Brenner) }
 {$I srealin.inc}          { REAL-Zahl Einleseroutine                 }
-{$I sfile.inc}            { Disketten I/O-Routinen fÅr Parameter     }
+{$I sfile.inc}            { Disketten I/O-Routinen f„Äâ Parameter     }
 {$I sparam.inc}           { Parameter editieren                      }
 {$I sfunct.inc}           { Programmfunktionen: Drucken,Plotten,etc. }
 
@@ -166,7 +166,7 @@ end { gauss_profil };
 {----------------------------------------------}
 {-------  Berechnen der Intensitaeten  --------}
 {-------  Intens(ju,jo,fu,fo,ikern)   ---------}
-{-------   Åber die sechsJ-Symbole    ---------}
+{-------   ÔΩúer die sechsJ-Symbole    ---------}
 {----------------------------------------------}
 
 function intens(var juu,joo,fuu,foo,ikernspin : real) : real;
@@ -186,11 +186,11 @@ end { intens };
 {-----------------------------------------------}
 
 procedure skal_intensity;
-{ Skalierung der IntensitÑten, suchen von Int(max) }
+{ Skalierung der Intensit–¥en, suchen von Int(max) }
 var   max_intensi,such_intensi : real;
 begin { skal_intensity }
   tabs(t);
-  writeln('Skalierung der IntensitÑten auf 100% ... !');
+  writeln('Skalierung der Intensit–¥en auf 100% ... !');
   max_intensi:=0.001;
   for n:=0 to maxxu do
   begin
@@ -198,7 +198,7 @@ begin { skal_intensity }
     begin
       if ( ( fu[n]-fo[m] = 0) or (abs( fu[n] - fo[m]) = 1) ) then
       begin
-        {  maximale Linien-IntensitÑten  }
+        {  maximale Linien-Intensit–¥en  }
         such_intensi:=intens(ju,jo,fu[n],fo[m],ikern)*100;
         if (such_intensi > max_intensi) then max_intensi := such_intensi;
       end { if };
@@ -218,7 +218,7 @@ label ende;
 begin { save }
   writeln('Spektrumdaten werden gespeichert in der Datei : ',datname);
   assign(filvar,datname);
-  rewrite(filvar);             { gleichnamige Datei wird Åueberschrieben }
+  rewrite(filvar);             { gleichnamige Datei wird „Äåeberschrieben }
   {  Parameter  }
   writeln(filvar,'Spektrumdaten:');
   writeln(filvar,'==============');
@@ -268,7 +268,7 @@ begin { save }
         if ( ( fu[n]=0) and (fo[m]=0) )  then goto ende;
         energie[m,n] := wo[m] - wu[n];
         write(filvar,'E(',fo[m]:3:1,',',fu[n]:3:1,') = ',energie[m,n]:15:6);
-        {  Linien-IntensitÑten skaliert auf 100 % }
+        {  Linien-Intensit–¥en skaliert auf 100 % }
         intensi:=skal_intensi*intens(ju,jo,fu[n],fo[m],ikern)*100;
         writeln(filvar,'   (Int : ',intensi:6:2,'%)');
         ende:
@@ -297,7 +297,7 @@ end { save };
 procedure berechne_f;
 begin { berechne_f }
   tabs(t);
-  { Berechnung fÅr den unteren Zustand }
+  { Berechnung f„Äâ den unteren Zustand }
   j:=ju;
   if j>=ikern then max:=ikern
   else max:=j;
@@ -503,7 +503,7 @@ begin { einhuellende }
   gotoxy(72,2);
   write('Rechnung');
   gotoxy(72,3);
-  write('lÑuft:');
+  write('l–µft:');
   for n:=0 to maxxu do
   begin
     for m:=0 to maxxo do
@@ -514,7 +514,7 @@ begin { einhuellende }
            x:=energie[m,n];
            intensity:=intens(ju,jo,fu[n],fo[m],ikern)*skal_intensi;
            intensity:=intensity*grafik_skal;
-           schalter:=FALSE;  { Benutze Routinen nur fÅr Berechnungen,
+           schalter:=FALSE;  { Benutze Routinen nur f„Äâ Berechnungen,
                                d.h. Einzel-Linien nicht einzeichnen }
            gotoxy(78,3);     { anzeigen welche Linie berechnet wird }
            write(summi:2);
@@ -609,7 +609,7 @@ begin { begin_grafik }
   SetLineStyle(0);
   gotoxy(3,2);
   write(element);                             {  Elementbezeichnung  }
-  writeln(',  öbergang : ',vonzustand,' -> ',nachzustand);
+  writeln(',  Âñòergang : ',vonzustand,' -> ',nachzustand);
   gotoxy(52,2);
   write('HFS - SPEKTRUM');
   gotoxy(52,3);
