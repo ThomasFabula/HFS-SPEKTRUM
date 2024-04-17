@@ -1,8 +1,8 @@
 echo off
 :start
 cls
-echo                         Bitte wÑhlen Sie:
-echo                         ﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂﬂ
+echo                         Bitte w√§hlen Sie:
+echo                         =================
 echo.
 echo               Hyperfeinstruktur-Auswerteprogramme
 echo.
@@ -20,7 +20,7 @@ echo         5 - ISOTOPIE    Spektrum ohne gerad. Isotope
 echo.
 echo.
 echo.
-echo         (Ctrl-C = Programmabbruch & zurÅck nach DOS)
+echo         (Ctrl-C = Programmabbruch & zur√ºck nach DOS)
 echo.
 rem Tastaturpuffer abfragen
 taste
@@ -32,24 +32,23 @@ if errorlevel 50 goto zwei
 if errorlevel 49 goto eins
 goto start
 :eins
-rem  Funktion 1 ist ausgewÑhlt
+rem  Funktion 1 ist ausgew√§hlt
 hf.bat
 goto ende
 :zwei
-rem  Funktion 2 ist ausgewÑhlt
+rem  Funktion 2 ist ausgew√§hlt
 hspek.bat
 goto ende
 :drei
-rem  Funktion 3 ist ausgewÑhlt
+rem  Funktion 3 ist ausgew√§hlt
 spek.bat
 goto ende
 :vier
-rem  Funktion 4 ist ausgewÑhlt
+rem  Funktion 4 ist ausgew√§hlt
 sac.bat
 :funf
-rem  Funktion 5 ist ausgewÑhlt
+rem  Funktion 5 ist ausgew√§hlt
 iso.bat
 :ende
 echo.
 echo Programmende
-
