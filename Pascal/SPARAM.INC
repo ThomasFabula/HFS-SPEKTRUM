@@ -147,7 +147,7 @@ begin
         gotoxy(1,21);
         for l:=1 to 80 do write(#205);
         gotoxy(1,20);
-        writeln('ACHTUNG : Drehimpulse Ju, Jo und I mssen ungleich Null sein !');
+        writeln('ACHTUNG : Drehimpulse Ju, Jo und I müssen ungleich Null sein !');
         write(#7,#7,#7);
         lowvideo;
         for t:=1 to 10000 do;
