@@ -5,13 +5,13 @@
     werten ( J, I ).
     Die F-, K-, W- und Energiewerte fuer jeweils den unteren bzw.
     oberen Zustand werden berechnet und ausgegeben.
-    Die Linien lassen sich als einzelne Lorentz- bzw. Gau疳rofile
+    Die Linien lassen sich als einzelne Lorentz- bzw. Gaussprofile
     ausgeben, oder auf Wunsch als Summenprofil am Bildschirm oder
     auf dem Drucker anzeigen.
-    Fuer die Druckerausgabe benetigt man bei der HERCULES-Karte das
+    Fuer die Druckerausgabe benoetigt man bei der HERCULES-Karte das
     Systemprogramm HGC.COM mit den Optionen (HGC FULL HPRINT).
     Hiernach ist der residente Teil des Print-Screen Hardcopy-
-    Programms auf die Grafikseite "umgebogen", und bei Dr…ken der
+    Programms auf die Grafikseite "umgebogen", und bei Druecken der
     Tastenkombination <Shift>+<Prt-Sc>+<n> erscheint ein Hardcopy
     auf dem jeweils angeschlossenem Drucker.
     ( n = 0, Ausdruck quer  im Format DIN A4 )
@@ -186,7 +186,7 @@ end { intens };
 {-----------------------------------------------}
 
 procedure skal_intensity;
-{ Skalierung der Intensitдen, suchen von Int(max) }
+{ Skalierung der Intensitaeten, suchen von Int(max) }
 var   max_intensi,such_intensi : real;
 begin { skal_intensity }
   tabs(t);
@@ -198,7 +198,7 @@ begin { skal_intensity }
     begin
       if ( ( fu[n]-fo[m] = 0) or (abs( fu[n] - fo[m]) = 1) ) then
       begin
-        {  maximale Linien-Intensitдen  }
+        {  maximale Linien-Intensitaeten  }
         such_intensi:=intens(ju,jo,fu[n],fo[m],ikern)*100;
         if (such_intensi > max_intensi) then max_intensi := such_intensi;
       end { if };
@@ -218,7 +218,7 @@ label ende;
 begin { save }
   writeln('Spektrumdaten werden gespeichert in der Datei : ',datname);
   assign(filvar,datname);
-  rewrite(filvar);             { gleichnamige Datei wird 「eberschrieben }
+  rewrite(filvar);             { gleichnamige Datei wird ueberschrieben }
   {  Parameter  }
   writeln(filvar,'Spektrumdaten:');
   writeln(filvar,'==============');
@@ -401,7 +401,7 @@ end { berechne_w };
 {                  unter Beachtung der Auswahlregeln:                  }
 {                                                                      }
 {                       delta(F) = 0, +1, -1     und                   }
-{                  Ubergang F = 0 nach F = 0  verboten                 }
+{                  Uebergang F = 0 nach F = 0  verboten                }
 {                                                                      }
 {                       Wo(n) - Wu(m)  ==>  E(n,m)                     }
 {                Energiewerte W,E in [MHz] - Einheiten                 }
@@ -680,7 +680,7 @@ end { end_grafik };
 
 
 {----------------------------------------------------------------------}
-{ Zeichnet die gefundenen HFS-Uebergangsfrequenzen auf den Bildschirm.  }
+{ Zeichnet die gefundenen HFS-Uebergangsfrequenzen auf den Bildschirm. }
 {----------------------------------------------------------------------}
 
 procedure zeige_Spektrum_CRT;
