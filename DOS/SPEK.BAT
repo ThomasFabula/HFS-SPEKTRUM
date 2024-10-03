@@ -6,7 +6,7 @@ rem HERCULES-Grafikkarte initialisieren
 rem Ausdruck mit <Shift-Prnt-Scr-0>
 rem HERCULES Drucker-Hardcopy installieren
 hgc full hprint
-echo Startupfile fr SPEKTRUM
+echo Startupfile für SPEKTRUM
 type spektrum.txt
 pause
 rem Programmstart
