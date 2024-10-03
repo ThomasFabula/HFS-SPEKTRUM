@@ -62,4 +62,4 @@ var   X1WldGlb,X2WldGlb,Y1WldGlb,Y2WldGlb,AxGlb,AyGlb,BxGlb,ByGlb:real;
       world:worlds;
       window:windows;
       CharSet:CharArray;
-
+
