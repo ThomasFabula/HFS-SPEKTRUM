@@ -335,4 +335,4 @@ procedure InvertScreen;
     for i:=350 to 351 do
       FillChar(mem[GrafBase:BaseAddress(i)],XMaxGlb+1,0);
   end;
-
+
