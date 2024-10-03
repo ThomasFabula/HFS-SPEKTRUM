@@ -8,8 +8,8 @@ Au [MHz] = A-Faktor des unteren Zustands
 Ao [MHz] = A-Faktor des oberen Zustands
 Bu [MHz] = B-Faktor des unteren Zustands
 Bo [MHz] = B-Faktor des oberen Zustands
-Ju       = Huellendrehimpuls des unteren Zustandes
-Jo       = Huellendrehimpuls des oberen Zustandes
+Ju       = Huellendrehimpuls des unteren Zustandes
+Jo       = Huellendrehimpuls des oberen Zustandes
 I        = Kernspin des Atoms
 Comment  = 1 Zeile (Kommentar zum Spektrum)
 
@@ -18,10 +18,10 @@ Comment  = 1 Zeile (Kommentar zum Spektrum)
 
 
 Das Programm berechnet aus oben genannten Parametern die Energiewerte
-fr den jeweils unteren W(Fu) bzw. oberen Zustand W(Fo) sowie die
+fÃ¼r den jeweils unteren W(Fu) bzw. oberen Zustand W(Fo) sowie die
 Energiedifferenzen E(Fu,Fo) = W(Fo) - W(Fu) und deren Intensitaeten,
 welche als Linien im HFS-Spektrum grafisch dargestellt werden. Es kann
-zwischen Lorentz- und Gauáprofil gewaehlt werden, die ihrerseits
+zwischen Lorentz- und GauÃ¡profil gewaehlt werden, die ihrerseits
 aufsummiert als Spektrum dargestellt werden koennen. Bei Bedarf kann das
 Spektrum auf einem Drucker ausgegeben werden.
 
