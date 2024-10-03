@@ -1082,4 +1082,4 @@ procedure hardcopy(inverse:boolean;mode:byte); { EPSON }
     writeln(lst,^['2');
     ColorGlb:=ColorLoc;
   end;
-
+
