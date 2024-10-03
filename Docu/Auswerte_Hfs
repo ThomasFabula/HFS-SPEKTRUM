@@ -136,7 +136,7 @@ Es folgen die zeilen mit den Meßwerten:
     3    2-5  C4    XNAME[I]   Bezeichnung des i.ten Eingabewertes		     
     3     6    C1    LIMIT            
 
-wird hier ein Zeichrn ungleich BLANK eingegeben, so wird dies als Ende des Datensatzes verstanden.
+wird hier ein Zeichen ungleich BLANK eingegeben, so wird dies als Ende des Datensatzes verstanden.
 3            R       FO[I]     F-Quantenzahl
 3            R       FU[I]     F-Quantenzahl
 3            R       Y[I]      Meßwert      
